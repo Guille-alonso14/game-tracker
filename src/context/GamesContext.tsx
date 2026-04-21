@@ -23,7 +23,7 @@ export function GamesProvider({ children }: { children: ReactNode }) {
     </GamesContext.Provider>
   )
 }
-
+// eslint-disable-next-line react-refresh/only-export-components
 export function useGamesContext() {
   const context = useContext(GamesContext)
   if (!context) throw new Error('useGamesContext debe usarse dentro de GamesProvider')
