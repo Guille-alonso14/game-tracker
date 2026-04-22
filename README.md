@@ -22,5 +22,5 @@ npm run dev
 
 ## URLs
 
-- Frontend: pendiente de despliegue
-- Backend: pendiente de despliegue
+- Frontend: https://game-tracker-bice.vercel.app
+- Backend: https://game-tracker-5zy4.onrender.com
