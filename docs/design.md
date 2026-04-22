@@ -83,3 +83,15 @@ Array en memoria (datos mock)
   que los componentes no hagan fetch directamente.
 - Los tipos TypeScript del frontend están alineados con los datos
   que devuelve el backend.
+
+  ## Lazy loading
+
+Las páginas se cargan de forma diferida usando `React.lazy` y `Suspense`.
+Esto significa que el código de cada página solo se descarga cuando el
+usuario la visita por primera vez, reduciendo el tamaño del bundle inicial.
+
+```tsx
+const HomePage = lazy(() => import('./pages/HomePage'))
+```
+
+Mientras se carga la página se muestra un fallback con el mensaje "Cargando...".
