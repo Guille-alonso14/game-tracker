@@ -5,7 +5,7 @@ en progreso y completados.
 
 ## Tablero Trello
 
-[Ver tablero de gestión del proyecto](TU_ENLACE_TRELLO)
+[Ver tablero de gestión del proyecto](https://trello.com/b/S14EPTTN/game-tracker)
 
 ## Tech stack
 
