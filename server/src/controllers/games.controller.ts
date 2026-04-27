@@ -6,13 +6,27 @@ function getId(req: Request): string {
   return Array.isArray(id) ? id[0] : id
 }
 
-export function getAll(_req: Request, res: Response) {
-  const games = gamesService.getAllGames()
+function getUserId(req: Request): string {
+  return req.headers['x-user-id'] as string ?? ''
+}
+
+export async function getAll(req: Request, res: Response) {
+  const userId = getUserId(req)
+  if (!userId) {
+    res.status(401).json({ error: 'No autorizado' })
+    return
+  }
+  const games = await gamesService.getAllGames(userId)
   res.json(games)
 }
 
-export function getOne(req: Request, res: Response) {
-  const game = gamesService.getGameById(getId(req))
+export async function getOne(req: Request, res: Response) {
+  const userId = getUserId(req)
+  if (!userId) {
+    res.status(401).json({ error: 'No autorizado' })
+    return
+  }
+  const game = await gamesService.getGameById(getId(req), userId)
   if (!game) {
     res.status(404).json({ error: 'Juego no encontrado' })
     return
@@ -20,13 +34,18 @@ export function getOne(req: Request, res: Response) {
   res.json(game)
 }
 
-export function create(req: Request, res: Response) {
+export async function create(req: Request, res: Response) {
+  const userId = getUserId(req)
+  if (!userId) {
+    res.status(401).json({ error: 'No autorizado' })
+    return
+  }
   const { title, platform, genre, status, hoursEstimated, score, notes } = req.body
   if (!title || !platform || !genre || !status) {
     res.status(400).json({ error: 'Faltan campos obligatorios' })
     return
   }
-  const newGame = gamesService.createGame({
+  const newGame = await gamesService.createGame({
     title,
     platform,
     genre,
@@ -34,12 +53,17 @@ export function create(req: Request, res: Response) {
     hoursEstimated: hoursEstimated ?? 0,
     score,
     notes: notes ?? '',
-  })
+  }, userId)
   res.status(201).json(newGame)
 }
 
-export function update(req: Request, res: Response) {
-  const updated = gamesService.updateGame(getId(req), req.body)
+export async function update(req: Request, res: Response) {
+  const userId = getUserId(req)
+  if (!userId) {
+    res.status(401).json({ error: 'No autorizado' })
+    return
+  }
+  const updated = await gamesService.updateGame(getId(req), req.body, userId)
   if (!updated) {
     res.status(404).json({ error: 'Juego no encontrado' })
     return
@@ -47,8 +71,13 @@ export function update(req: Request, res: Response) {
   res.json(updated)
 }
 
-export function remove(req: Request, res: Response) {
-  const deleted = gamesService.deleteGame(getId(req))
+export async function remove(req: Request, res: Response) {
+  const userId = getUserId(req)
+  if (!userId) {
+    res.status(401).json({ error: 'No autorizado' })
+    return
+  }
+  const deleted = await gamesService.deleteGame(getId(req), userId)
   if (!deleted) {
     res.status(404).json({ error: 'Juego no encontrado' })
     return

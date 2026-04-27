@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
-import { Routes, Route } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
+import { useAuth } from './context/AuthContext'
+import AuthPage from './pages/AuthPage'
 
 const HomePage = lazy(() => import('./pages/HomePage'))
 const LibraryPage = lazy(() => import('./pages/LibraryPage'))
@@ -9,6 +10,13 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 function Navbar() {
   const navigate = useNavigate()
+  const { user, signOut } = useAuth()
+
+  async function handleSignOut() {
+    await signOut()
+    navigate('/')
+  }
+
   return (
     <nav className="bg-white border-b border-gray-200 px-4 py-3">
       <div className="max-w-5xl mx-auto flex items-center gap-6">
@@ -30,12 +38,31 @@ function Navbar() {
         >
           Biblioteca
         </span>
+        <div className="ml-auto flex items-center gap-4">
+          <span className="text-xs text-gray-400">{user?.email}</span>
+          <button
+            onClick={handleSignOut}
+            className="text-sm text-gray-600 hover:text-gray-900"
+          >
+            Cerrar sesión
+          </button>
+        </div>
       </div>
     </nav>
   )
 }
 
 export default function App() {
+  const { user, loading } = useAuth()
+
+  if (loading) return (
+    <div className="flex justify-center items-center h-screen text-gray-400">
+      Cargando...
+    </div>
+  )
+
+  if (!user) return <AuthPage />
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
