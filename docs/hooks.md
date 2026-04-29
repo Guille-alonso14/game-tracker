@@ -25,3 +25,24 @@ Se conecta con el backend a través del cliente de API tipado.
 ```tsx
 const { games, loading, error, addGame, removeGame } = useGames()
 ```
+## useRecommendations
+
+Custom hook que calcula recomendaciones de juegos basándose en los
+géneros y plataformas de los juegos completados.
+
+**Parámetros:**
+- `games: Game[]` — lista completa de juegos del usuario
+
+**Lógica:**
+1. Filtra los juegos completados y los pendientes
+2. Cuenta cuántas veces aparece cada género y plataforma en los completados
+3. Puntúa cada juego pendiente según si coincide con esos géneros y plataformas
+4. Devuelve los 3 juegos pendientes con mayor puntuación
+
+**Hooks de React utilizados:**
+- `useMemo` — para evitar recalcular las recomendaciones en cada render
+
+**Uso:**
+```tsx
+const recommendations = useRecommendations(games)
+```
