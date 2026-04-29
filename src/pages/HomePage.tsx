@@ -1,5 +1,6 @@
 import { useGamesContext } from '../context/GamesContext'
 import GameList from '../components/GameList'
+import Recommendations from '../components/Recommendations'
 
 export default function HomePage() {
   const { games, loading, error } = useGamesContext()
@@ -20,6 +21,7 @@ export default function HomePage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
+      <Recommendations />
       <h1 className="text-2xl font-bold text-gray-900 mb-2">
         En progreso
       </h1>
