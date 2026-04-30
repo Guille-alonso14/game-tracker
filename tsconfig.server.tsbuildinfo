@@ -1,0 +1,1 @@
+{"root":["./server/src/index.ts","./server/src/config/data.ts","./server/src/config/supabase.ts","./server/src/controllers/games.controller.ts","./server/src/routes/games.ts","./server/src/services/games.service.ts","./server/src/services/igdb.service.ts"],"version":"6.0.3"}

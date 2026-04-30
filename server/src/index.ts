@@ -1,6 +1,3 @@
-import { readFileSync } from 'fs'
-import { resolve } from 'path'
-
 import express from 'express'
 import cors from 'cors'
 import { gamesRouter } from './routes/games'
