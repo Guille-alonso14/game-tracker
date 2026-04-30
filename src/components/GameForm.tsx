@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Game, Status, Platform } from '../types/game'
+import { searchCovers } from '../api/client'
 
 type GameFormData = Omit<Game, 'id' | 'createdAt'>
 
@@ -26,9 +27,12 @@ export default function GameForm({ initialData, onSubmit, onCancel, submitLabel 
     hoursEstimated: initialData?.hoursEstimated ?? 0,
     score: initialData?.score,
     notes: initialData?.notes ?? '',
+    cover: initialData?.cover,
   })
   const [errors, setErrors] = useState<Partial<Record<keyof GameFormData, string>>>({})
   const [submitting, setSubmitting] = useState(false)
+  const [coverResults, setCoverResults] = useState<{ id: number; name: string; cover?: string }[]>([])
+  const [searchingCover, setSearchingCover] = useState(false)
 
   function validate() {
     const newErrors: Partial<Record<keyof GameFormData, string>> = {}
@@ -61,19 +65,70 @@ export default function GameForm({ initialData, onSubmit, onCancel, submitLabel 
     setErrors(prev => ({ ...prev, [field]: undefined }))
   }
 
+  async function handleSearchCover() {
+    if (!form.title.trim()) return
+    setSearchingCover(true)
+    try {
+      const results = await searchCovers(form.title)
+      setCoverResults(results)
+    } finally {
+      setSearchingCover(false)
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Título *</label>
-        <input
-          type="text"
-          value={form.title}
-          onChange={e => handleChange('title', e.target.value)}
-          className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Nombre del juego"
-        />
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={form.title}
+            onChange={e => handleChange('title', e.target.value)}
+            className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Nombre del juego"
+          />
+          <button
+            type="button"
+            onClick={handleSearchCover}
+            disabled={searchingCover}
+            className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors disabled:opacity-50"
+          >
+            {searchingCover ? '...' : '🔍 Cover'}
+          </button>
+        </div>
         {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
       </div>
+
+      {coverResults.length > 0 && (
+        <div>
+          <p className="text-xs text-gray-500 mb-2">Selecciona un cover:</p>
+          <div className="flex gap-2 flex-wrap">
+            {coverResults.map(result => (
+              <div
+                key={result.id}
+                onClick={() => {
+                  handleChange('cover', result.cover)
+                  handleChange('title', result.name)
+                  setCoverResults([])
+                }}
+                className={`cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${form.cover === result.cover ? 'border-blue-500' : 'border-transparent'}`}
+              >
+                {result.cover ? (
+                  <img src={`https:${result.cover}`} alt={result.name} className="w-16 h-20 object-cover" />
+                ) : (
+                  <div className="w-16 h-20 bg-gray-100 flex items-center justify-center text-xs text-gray-400 text-center p-1">
+                    {result.name}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+          {form.cover && (
+            <p className="text-xs text-green-600 mt-1">✓ Cover seleccionado</p>
+          )}
+        </div>
+      )}
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Plataforma *</label>

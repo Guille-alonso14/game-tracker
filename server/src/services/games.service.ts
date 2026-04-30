@@ -32,6 +32,7 @@ export async function createGame(game: Omit<Game, 'id' | 'createdAt'>, userId: s
       hours_estimated: game.hoursEstimated,
       score: game.score,
       notes: game.notes,
+      cover: game.cover,
       user_id: userId,
     })
     .select()
@@ -51,6 +52,7 @@ export async function updateGame(id: string, game: Partial<Game>, userId: string
       hours_estimated: game.hoursEstimated,
       score: game.score,
       notes: game.notes,
+      cover: game.cover,
     })
     .eq('id', id)
     .eq('user_id', userId)
@@ -79,6 +81,7 @@ function toGame(data: Record<string, unknown>): Game {
     hoursEstimated: data.hours_estimated as number,
     score: data.score as number | undefined,
     notes: data.notes as string,
+    cover: data.cover as string | undefined,
     createdAt: data.created_at as string,
   } as Game
 }

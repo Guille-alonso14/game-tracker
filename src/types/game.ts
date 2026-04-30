@@ -16,5 +16,6 @@ export interface Game {
   hoursEstimated: number
   score?: number
   notes?: string
+  cover?: string
   createdAt: string
 }

@@ -56,3 +56,10 @@ export async function deleteGame(id: string): Promise<void> {
   })
   if (!res.ok) throw new Error('Error al eliminar el juego')
 }
+
+export async function searchCovers(title: string): Promise<{ id: number; name: string; cover?: string }[]> {
+  const headers = await getHeaders()
+  const res = await fetch(`${BASE_URL}/games/search-cover?title=${encodeURIComponent(title)}`, { headers })
+  if (!res.ok) throw new Error('Error al buscar covers')
+  return res.json()
+}
