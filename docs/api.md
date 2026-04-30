@@ -66,3 +66,31 @@ Elimina un juego.
 - **controllers/** — recibe las peticiones, valida y llama a los servicios
 - **services/** — contiene la lógica de negocio y accede a los datos
 - **config/** — datos mock en memoria
+
+### GET /games/search-cover?title=:title
+Busca covers de juegos en IGDB.
+
+**Query params:**
+- `title` — nombre del juego a buscar
+
+**Response 200:**
+```json
+[
+  {
+    "id": 1234,
+    "name": "The Witcher 3: Wild Hunt",
+    "cover": "//images.igdb.com/igdb/image/upload/t_cover_big/co1234.jpg"
+  }
+]
+```
+
+**Response 400:** `{ "error": "Title is required" }`
+
+## Autenticación
+
+Todos los endpoints requieren el header `x-user-id` con el UUID del
+usuario autenticado. Si no se incluye se devuelve un 401.
+
+```
+x-user-id: uuid-del-usuario
+```

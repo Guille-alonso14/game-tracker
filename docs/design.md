@@ -95,3 +95,31 @@ const HomePage = lazy(() => import('./pages/HomePage'))
 ```
 
 Mientras se carga la página se muestra un fallback con el mensaje "Cargando...".
+
+## Autenticación con Supabase
+
+La autenticación se gestiona con Supabase Auth. El flujo es:
+
+1. El usuario se registra o inicia sesión en `AuthPage`
+2. Supabase devuelve una sesión con el `user.id`
+3. El frontend envía el `user_id` en cada petición al backend como header `x-user-id`
+4. El backend filtra los juegos por `user_id` en Supabase
+
+## Base de datos Supabase
+
+Los datos de los juegos se guardan en la tabla `games` de Supabase.
+El backend usa el cliente de Supabase para hacer las operaciones CRUD.
+Cada juego tiene un `user_id` que lo asocia al usuario que lo creó.
+
+## Integración con IGDB
+
+IGDB es la API de videojuegos de Twitch. Se usa para buscar covers
+de juegos automáticamente. El flujo es:
+
+1. El usuario escribe el título del juego en el formulario
+2. Hace clic en el botón de búsqueda
+3. El frontend llama al endpoint `/api/v1/games/search-cover`
+4. El backend se autentica con Twitch y llama a la API de IGDB
+5. IGDB devuelve los resultados con covers
+6. El usuario selecciona el cover que quiere
+7. El cover se guarda junto con el juego en Supabase
