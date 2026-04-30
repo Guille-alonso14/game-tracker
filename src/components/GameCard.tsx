@@ -15,12 +15,14 @@ export default function GameCard({ game }: Props) {
       className="bg-white border border-gray-200 rounded-xl overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
     >
       {game.cover && (
-        <img
-          src={`https:${game.cover}`}
-          alt={game.title}
-          className="w-full h-40 object-cover"
-        />
-      )}
+  <div style={{ height: '120px', overflow: 'hidden' }}>
+    <img
+      src={`https:${game.cover}`}
+      alt={game.title}
+      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+    />
+  </div>
+)}
       <div className="p-4">
         <div className="flex items-start justify-between gap-2 mb-2">
           <h3 className="font-semibold text-gray-900 text-sm leading-tight">
