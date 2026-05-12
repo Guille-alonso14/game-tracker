@@ -56,46 +56,24 @@ y búsqueda automática de covers desde IGDB.
 
 ## Estructura del proyecto
 
+```
 game-tracker/
 ├── src/
-│   ├── api/
-│   │   ├── client.ts         # Cliente de API tipado
-│   │   └── supabase.ts       # Cliente de Supabase (frontend)
-│   ├── components/
-│   │   ├── FilterBar.tsx
-│   │   ├── GameCard.tsx
-│   │   ├── GameForm.tsx
-│   │   ├── GameList.tsx
-│   │   ├── Recommendations.tsx
-│   │   └── StatusBadge.tsx
-│   ├── context/
-│   │   ├── AuthContext.tsx    # Estado global de autenticación
-│   │   └── GamesContext.tsx  # Estado global de juegos
-│   ├── hooks/
-│   │   ├── useGames.ts        # Hook CRUD de juegos
-│   │   └── useRecommendations.ts # Hook de recomendaciones
-│   ├── pages/
-│   │   ├── AuthPage.tsx
-│   │   ├── GameDetailPage.tsx
-│   │   ├── HomePage.tsx
-│   │   ├── LibraryPage.tsx
-│   │   └── NotFoundPage.tsx
-│   └── types/
-│       └── game.ts            # Tipos TypeScript
+│   ├── api/          # Cliente de API y Supabase
+│   ├── components/   # Componentes reutilizables
+│   ├── context/      # Estado global (Auth y Games)
+│   ├── hooks/        # Custom hooks
+│   ├── pages/        # Páginas de la app
+│   └── types/        # Tipos TypeScript
 ├── server/
 │   └── src/
-│       ├── index.ts           # Punto de entrada del servidor
-│       ├── config/
-│       │   └── supabase.ts    # Cliente de Supabase (backend)
-│       ├── routes/
-│       │   └── games.ts
-│       ├── controllers/
-│       │   └── games.controller.ts
-│       └── services/
-│           ├── games.service.ts
-│           └── igdb.service.ts
-├── docs/                      # Documentación del proyecto
+│       ├── config/       # Configuración de Supabase
+│       ├── routes/       # Endpoints de la API
+│       ├── controllers/  # Controladores
+│       └── services/     # Lógica de negocio e IGDB
+├── docs/             # Documentación del proyecto
 └── README.md
+```
 
 ## Tablero Trello
 
